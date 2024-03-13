@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Films</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+</head>
+<body>
+
+
+<h2>Ajout de film</h2>
+
+<form action="/films" method="post">
+    <div class="form-element">
+        <label>Titre</label>
+        <input type="text" name="titre">
+    </div>
+    <div class="form-element">
+        <label>Anneé</label>
+        <input type="number" name="annee">
+    </div>
+    <div class="form-element">
+        <label>Dureé</label>
+        <input type="number" name="duree">
+    </div>
+    <div class="form-element">
+        <label>Synopsis</label>
+        <input type="text" name="synopsis">
+    </div>
+    <div class="form-element">
+        <button>Ajouter</button>
+    </div>
+
+</form>
+
+
+<h2 th:if="${listeFilms.isEmpty()}">Aucun film pour le moment...</h2>
+<section th:if="${!listeFilms.isEmpty()}">
+    <h1>Les Films</h1>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Titre</th>
+            <th>Anneé</th>
+            <th>Dureé</th>
+            <th>Synopsis</th>
+
+            <th>Détail</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="film : ${listeFilms}">
+            <td th:text="${film.id}"></td>
+            <td th:text="${film.titre}"></td>
+            <td th:text="${film.annee}"></td>
+            <td th:text="${film.duree}"></td>
+            <td th:text="${film.synopsis}"></td>
+
+            <td><a th:href="|/films/${film.id}|">détail</a></td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+
+
+</body>
+</html>

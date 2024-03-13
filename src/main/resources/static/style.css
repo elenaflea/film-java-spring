@@ -1,0 +1,123 @@
+body{
+    margin:0;
+    background-color: #161A30;
+    color: #31363F;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    font-family: "Roboto", sans-serif;
+}
+
+.logo{
+    height: 160px;
+    width: 160px;
+   /* border: 1px solid #fff;
+    border-radius: 50%;*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+}
+.logoIcon{
+    color: white;
+    height: 100%;
+    width: 100%;
+}
+.welcome-container{
+    width: 420px;
+    margin: auto;
+    min-height: 100vh;
+    background-color: #fff;
+    border-top-right-radius: 40px;
+    border-top-left-radius: 40px;
+    padding-top: 60px;
+}
+.wrapper {
+    display: flex;
+    justify-content: center;
+}
+.box{
+    height: 120px;
+    width: 120px;
+    border-radius: 20px;
+    padding: 5px;
+    margin: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor:pointer;
+}
+.noDeco{
+    text-decoration: none;
+}
+.icon{
+    height: 30px;
+    width: 30px;
+    color: #fff;
+}
+.violet{
+    background-color: #A460ED;
+}
+.blue{
+    background-color: #9FC9F3;
+}
+.orange{
+    background-color: #F05941;
+}
+.yellow{
+    background-color: #FEB139;
+}
+.pink{
+    background-color: #F07DEA;
+}
+
+form .form-element{
+    display: flex;
+    margin-bottom: 10px;
+}
+
+form .form-element label{
+    width : 200px;
+    margin-right: 5px;
+}
+
+form .form-element input{
+    padding: 4px;
+}
+
+form .form-element button{
+    margin-left: 200px;
+    background-color: cornflowerblue;
+    color: white;
+    border: none;
+    padding: 5px;
+    font-size: 16px;
+}
+
+/*
+Table
+*/
+
+table {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 500px;
+}
+
+table td, table th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+table tr:nth-child(even){background-color: #f2f2f2;}
+
+table tr:hover {background-color: #ddd;}
+
+table th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #222831;
+    color: white;
+}
