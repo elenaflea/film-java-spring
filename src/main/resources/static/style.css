@@ -12,8 +12,8 @@ body{
 .logo{
     height: 160px;
     width: 160px;
-   /* border: 1px solid #fff;
-    border-radius: 50%;*/
+   /* border: 1px solid #fff;*/
+    border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -24,6 +24,12 @@ body{
     height: 100%;
     width: 100%;
 }
+
+.topIcon{
+    color: white;
+    height: 64px;
+    width: 64px;
+}
 .welcome-container{
     width: 420px;
     margin: auto;
@@ -32,6 +38,10 @@ body{
     border-top-right-radius: 40px;
     border-top-left-radius: 40px;
     padding-top: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 }
 .wrapper {
     display: flex;
@@ -71,30 +81,30 @@ body{
 .pink{
     background-color: #F07DEA;
 }
+form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
 form .form-element{
     display: flex;
     margin-bottom: 10px;
-}
-
-form .form-element label{
-    width : 200px;
-    margin-right: 5px;
+    width: 90%;
 }
 
 form .form-element input{
-    padding: 4px;
+    padding: 6px;
 }
 
 form .form-element button{
-    margin-left: 200px;
-    background-color: cornflowerblue;
-    color: white;
-    border: none;
-    padding: 5px;
-    font-size: 16px;
+    align-self: center;
+    padding: 4px 10px;
 }
 
+.inputForm{
+    border: 2px solid #A460ED;
+}
 /*
 Table
 */
@@ -102,7 +112,8 @@ Table
 table {
     font-family: Arial, Helvetica, sans-serif;
     border-collapse: collapse;
-    width: 500px;
+    width: 90%;
+    overflow-y: scroll;
 }
 
 table td, table th {
@@ -120,4 +131,17 @@ table th {
     text-align: left;
     background-color: #222831;
     color: white;
+}
+
+
+@media all and (max-width: 800px) {
+    .welcome-container{
+        width: 80%;
+    }
+}
+
+@media all and (max-width: 500px) {
+    .welcome-container{
+        width: 100%;
+    }
 }
