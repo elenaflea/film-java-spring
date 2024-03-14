@@ -1,6 +1,8 @@
 package fr.eni.tp.filmotheque.controller;
 
 import fr.eni.tp.filmotheque.bll.IFilmService;
+import fr.eni.tp.filmotheque.bll.IGenreService;
+import fr.eni.tp.filmotheque.bll.IParticipantService;
 import fr.eni.tp.filmotheque.bo.Film;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +21,10 @@ public class FilmController {
     * (en ajoutant @Service avant le nom de la classe) */
     @Autowired
     private IFilmService filmService;
+    @Autowired
+    private IGenreService genreService;
+  //  @Autowired
+   // private IParticipantService participantService;
 
     /**
      * Dans cette méthode, je vais appeler consulterFilmParId() de FilmServiceBouchon
@@ -79,12 +85,12 @@ public class FilmController {
     }
 
 
-    @GetMapping("/add")
+    @GetMapping("/creer")
     public String getForm(Model model){
         model.addAttribute("listeFilms", filmService.consulterFilms());
-        return "filmForm";
+        return "filmCreation";
     }
-    @PostMapping("/add")
+    @PostMapping("/creer")
     public String postFilm2(
             @RequestParam String titre,
             @RequestParam int annee,

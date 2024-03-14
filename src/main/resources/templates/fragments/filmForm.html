@@ -1,0 +1,48 @@
+
+
+        <form action="/films" method="post" class="w-100" th:fragment="form(viewOnly)">
+            <div class="form-element">
+                <label>Genre</label>
+                <input disabled th:value="${film.genre.titre}"  placeholder="Genre" class="form-control ">
+            </div>
+
+            <!-- Année -->
+            <div class="form-element">
+                <label>Année</label>
+                <input disabled th:value="${film.annee}" placeholder="Anneé" class="form-control ">
+            </div>
+
+            <!-- Titre -->
+            <div class="form-element">
+                <label>Titre</label>
+                <input disabled th:value="${film.titre}" placeholder="Titre" class="form-control ">
+            </div>
+
+            <!-- Réalisateur -->
+            <div class="form-element">
+                <label>Réalisateur</label>
+                <input disabled th:value="${film.realisateur}" placeholder="Realisateur" class="form-control">
+            </div>
+
+            <!-- Durée -->
+            <div class="form-element">
+                <label>Durée</label>
+                <input disabled th:value="${film.duree}" class="form-control">
+            </div>
+
+            <!-- Acteurs -->
+            <div class="form-element">
+                <label>Acteurs</label>
+                <ul>
+                    <li th:each="acteur : ${film.acteurs}" th:text="${acteur}" ></li>
+                </ul>
+            </div>
+
+            <!-- Synopsis -->
+            <div class="form-element">
+                <label>Synopsis</label>
+                <textarea disabled cols="30" rows="6" th:text="${film.synopsis}" class="form-control"></textarea>
+            </div>
+
+        </form>
+    </div>

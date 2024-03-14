@@ -101,6 +101,12 @@ main{
 .pink{
     background-color: #F07DEA;
 }
+.red{
+    background-color: #FF204E;
+}
+.pale{
+    background-color: #FF8E8F;
+}
 form{
     display: flex;
     flex-direction: column;
@@ -127,16 +133,15 @@ form .form-element button{
 .inputForm{
     border: 2px solid #A460ED;
 }
-/*
-Table
-*/
+
 
 table {
-    font-family: Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     width: 75%;
     overflow-y: scroll;
     margin: auto;
+    border-radius: 5px;
+    text-align: left;
 }
 
 table td, table th {
@@ -144,16 +149,22 @@ table td, table th {
     padding: 4px;
 }
 
-table tr:nth-child(even){background-color: #f2f2f2;}
+table tr:nth-child(even){background-color: #FFF7F1;}
 
 table tr:hover {background-color: #ddd;}
 
 table th {
     padding-top: 12px;
     padding-bottom: 12px;
-    text-align: left;
-    background-color: #222831;
+    text-align: center;
+    background-color: #161A30;
     color: white;
+}
+
+.tableGenre{
+    min-width: 80%;
+    font-size: 16px;
+    padding: 10px;
 }
 .pointer{
     cursor: pointer;
@@ -172,19 +183,19 @@ table th {
 }
 .linkBar{
     color: #fff;
-    margin-left: 15px;
-    margin-right: 15px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 .linkBarLeft{
     color: #fff;
-    margin-left: 60px;
-    margin-right: 15px;
+    margin-left: 45px;
+    margin-right: 10px;
 }
 
 .linkBarRight{
     color: #fff;
-    margin-left: 15px;
-    margin-right: 60px;
+    margin-left: 10px;
+    margin-right: 45px;
 }
 .addBtn{
     height: 70px;
@@ -202,6 +213,11 @@ table th {
 }
 .actionsLine{
     transform: translateY(-70px);
+}
+
+.deleteBtn{
+    border: none;
+    color: #F05941;
 }
 
 @media all and (max-width: 800px) {

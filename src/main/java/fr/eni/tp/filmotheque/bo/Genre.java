@@ -1,5 +1,6 @@
 package fr.eni.tp.filmotheque.bo;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,13 +10,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Genre {
     public long id;
+    @NotBlank
     public String titre;
 
-
-    /*
-     * pas besoin d'avoir la liste des films dans Genre
-     * car on va toujurs accéder d'abord aux film et ensuite au genre associé
-     * => association unidirectionnelle portée par la classe Film
-     * List<Film> films = new ArrayList<>();
-     */
+    public Genre(String titre) {
+        this.titre = titre;
+    }
 }
