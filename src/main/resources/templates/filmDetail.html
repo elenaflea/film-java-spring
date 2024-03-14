@@ -1,34 +1,67 @@
-<!DOCTYPE html>
-<html lang="en">
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layout/main}">
 <head>
     <meta charset="UTF-8">
-    <title th:text="|Détail du film ${film.titre} ${film.annee}|"></title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-
+    <title th:text="|Détail du film ${film.titre} (${film.annee})|"></title>
 </head>
 <body>
-<h1 th:text="|Détail du film ${film.titre} ${film.annee}|"></h1>
+<main class="flex-center" layout:fragment="content">
+    <br><br>
+    <div class="logo">
+        <img src="/film8.png" class="logoIcon"/>
+    </div>
+    <br><br>
 
-<label>Id</label>
-<h2 th:text="${film.id}"></h2>
+    <div class="welcome-container paddBtm">
+    <h3 th:text="|Détail du film ${film.titre} (${film.annee})|"></h3>
 
-<label>Titre</label>
-<h2 th:text="${film.titre}"></h2>
+    <form>
+        <div class="form-element">
+            <label>Genre</label>
+            <input disabled th:value="${film.genre.titre}"  placeholder="Genre" class="form-control ">
+        </div>
 
-<label>Anneé</label>
-<h2 th:text="${film.annee}"></h2>
+        <!-- Année -->
+        <div class="form-element">
+            <label>Année</label>
+            <input disabled th:value="${film.annee}" placeholder="Anneé" class="form-control ">
+        </div>
 
-<label>Dureé</label>
-<h2 th:text="${film.duree}"></h2>
+        <!-- Titre -->
+        <div class="form-element">
+            <label>Titre</label>
+            <input disabled th:value="${film.titre}" placeholder="Titre" class="form-control ">
+        </div>
 
-<label>Synapsis</label>
-<h2 th:text="${film.synopsis}"></h2>
+        <!-- Réalisateur -->
+        <div class="form-element">
+            <label>Réalisateur</label>
+            <input disabled th:value="${film.realisateur}" placeholder="Realisateur" class="form-control ">
+        </div>
 
+        <!-- Durée -->
+        <div class="form-element">
+            <label>Durée</label>
+            <input disabled th:value="${film.duree}">
+        </div>
+
+        <!-- Acteurs -->
+        <div class="form-element">
+            <label>Acteurs</label>
+
+            <ul>
+                <li th:each="acteur : ${film.acteurs}" th:text="${acteur}"></li>
+            </ul>
+        </div>
+
+        <!-- Synopsis -->
+        <div class="form-element">
+            <label>Synopsis</label>
+            <textarea disabled cols="30" rows="10" th:text="${film.synopsis}"></textarea>
+        </div>
+    </form>
+    </div>
+</main>
 
 </body>
 </html>

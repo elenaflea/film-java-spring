@@ -1,0 +1,41 @@
+
+<html lang="en" layout:decorate="~{layout/main}">
+<head>
+    <title>Films</title>
+</head>
+<body>
+<main class="flex-center" layout:fragment="content">
+    <br><br>
+    <div class="logo">
+        <img src="film6.png" class="logoIcon"/>
+    </div>
+
+    <br><br>
+
+    <div class="welcome-container ">
+
+        <form action="/films" method="post" class="w-100">
+            <div class="form-element ">
+                <input type="text" name="titre" placeholder="Titre" class="form-control ">
+            </div>
+            <div class="form-element ">
+                <input type="number" name="annee" placeholder="Anneé" class="form-control ">
+            </div>
+            <div class="form-element ">
+                <input type="number" name="duree" placeholder="Dureé" class="form-control ">
+            </div>
+            <div class="form-element ">
+                <textarea class="form-control" placeholder="Leave a description here" id="floatingTextarea" name="synopsis"></textarea>
+            </div>
+            <div class="form-element w-75">
+                <button class="btn btn-warning btn-lg w-100" >Ajouter</button>
+            </div>
+
+        </form>
+
+
+    </div>
+</main>
+</body>
+
+</html>

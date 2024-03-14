@@ -1,5 +1,6 @@
 package fr.eni.tp.filmotheque.bo;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,9 +13,13 @@ import java.util.List;
 @AllArgsConstructor
 public class Film {
     public long id;
+    @NotBlank
     public String titre;
+    @NotBlank
     public int annee;
+    @NotBlank
     public int duree;
+    @NotBlank
     public String synopsis;
 
     /*
