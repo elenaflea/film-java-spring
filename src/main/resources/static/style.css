@@ -113,6 +113,10 @@ form{
     align-items: center;
 }
 
+.error{
+color: #F05941;
+}
+
 form .form-element{
     display: flex;
     flex-direction: column;

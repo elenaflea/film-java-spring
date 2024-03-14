@@ -1,12 +1,77 @@
 <!DOCTYPE html>
 <html lang="en" layout:decorate="~{layout/main}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-    <title>Films</title>
+    <title>Participants</title>
 </head>
 <body>
 
 <main layout:fragment="content">
-    <h1>TODO - formulaire de création / affichage des participants</h1>
+    <br><br>
+    <div class="logo">
+        <img src="/film10.png" class="logoIcon"/>
+    </div>
+    <br><br>
+
+    <div class="welcome-container minHeight paddBtm">
+        <h2>Ajouter un acteur ou réalisateur</h2>
+
+
+        <form action="/participants" method="post" th:object="${participant}" class="w-100 ">
+            <div class="form-element mb-3">
+                <input
+                        type="text"
+                        th:field="*{nom}"
+                        class="form-control"
+                        placeholder="Nom">
+                <span class="error" th:errors="*{nom}"></span>
+
+                <input
+                        type="text"
+                        th:field="*{prenom}"
+                        class="form-control mt-3"
+                        placeholder="Prénom">
+                <span class="error" th:errors="*{prenom}"></span>
+            </div>
+
+            <div class="form-element">
+                <button class="btn btn-warning btn-lg w-100">Ajouter</button>
+            </div>
+
+        </form>
+        <br><br>
+        <img th:if="${listeParticipants.isEmpty()}" src="data.png" width="300px" height="300px"/>
+        <section th:if="${!listeParticipants.isEmpty()}">
+            <table class="w-100 p-3">
+                <thead>
+                <tr>
+                    <th>Prénom</th>
+                    <th>Nom</th>
+                    <th><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+                        <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001m-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708z"/>
+                    </svg></th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr th:each="participant : ${listeParticipants}">
+                    <td th:text="${participant.prenom}"></td>
+                    <td th:text="${participant.nom}"></td>
+                    <!-- bouton de suppression vers la page /genres/{id} -->
+                    <td>
+                        <form  method="post" th:action="|/participants/${participant.id}/supprimer|">
+                            <button class="deleteBtn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                    <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
+                                </svg>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+
+    </div>
 </main>
 
 </body>

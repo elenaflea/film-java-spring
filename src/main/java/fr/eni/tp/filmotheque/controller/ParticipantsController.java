@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/participants") // toutes les urls de mon controller vont être accessibles avec le prefixe : /membres
+@RequestMapping("/participants")
 public class ParticipantsController {
 
     @Autowired

@@ -23,8 +23,8 @@ public class FilmController {
     private IFilmService filmService;
     @Autowired
     private IGenreService genreService;
-  //  @Autowired
-   // private IParticipantService participantService;
+    @Autowired
+    private IParticipantService participantService;
 
     /**
      * Dans cette méthode, je vais appeler consulterFilmParId() de FilmServiceBouchon
