@@ -1,47 +1,68 @@
 
 
-        <form action="/films" method="post" class="w-100" th:fragment="form(viewOnly)">
-            <div class="form-element">
+        <form  class="w-100" th:fragment="form(viewOnly)" th:object="${film}">
+            <div class="form-element mb-2 w-100">
                 <label>Genre</label>
-                <input disabled th:value="${film.genre.titre}"  placeholder="Genre" class="form-control ">
+                <select th:disabled="${viewOnly}" th:field="*{genre}" class="form-select">
+                    <option th:each="genre : ${listeGenres}" th:value="${genre.id}" th:text="${genre.titre}"></option>
+                </select>
+                <span class="error" th:errors="*{genre}"></span>
             </div>
 
             <!-- Année -->
-            <div class="form-element">
+            <div class="form-element mb-2 w-100">
                 <label>Année</label>
-                <input disabled th:value="${film.annee}" placeholder="Anneé" class="form-control ">
+                <input th:disabled="${viewOnly}" th:field="*{annee}"  class="form-control ">
+                <span class="error" th:errors="*{annee}"></span>
             </div>
 
             <!-- Titre -->
-            <div class="form-element">
+            <div class="form-element mb-2 w-100">
                 <label>Titre</label>
-                <input disabled th:value="${film.titre}" placeholder="Titre" class="form-control ">
+                <input th:disabled="${viewOnly}" th:field="*{titre}" class="form-control ">
+                <span class="error" th:errors="*{titre}"></span>
             </div>
 
             <!-- Réalisateur -->
-            <div class="form-element">
+            <div class="form-element mb-2 w-100">
                 <label>Réalisateur</label>
-                <input disabled th:value="${film.realisateur}" placeholder="Realisateur" class="form-control">
+                <select th:disabled="${viewOnly}" th:field="*{realisateur}" class="form-select">
+                    <!-- je veux avoir une option par participant existant -->
+                    <option th:each="participant : ${listeParticipants}" th:value="${participant.id}" th:text="${participant}"></option>
+                </select>
+                <span class="error" th:errors="*{realisateur}"></span>
             </div>
 
             <!-- Durée -->
-            <div class="form-element">
+            <div class="form-element mb-2 w-100">
                 <label>Durée</label>
-                <input disabled th:value="|${film.duree} minutes|" class="form-control">
+                <input th:disabled="${viewOnly}" th:field="*{duree}"  class="form-control">
+                <span class="error" th:errors="*{duree}"></span>
             </div>
 
+
             <!-- Acteurs -->
-            <div class="form-element">
+            <div class="form-element mb-2 w-100">
                 <label>Acteurs</label>
-                <ul>
-                    <li th:each="acteur : ${film.acteurs}" th:text="${acteur}" ></li>
+                <ul th:if="${viewOnly}">
+                    <li th:each="acteur : ${film.acteurs}" th:text="${acteur}"></li>
                 </ul>
+                <select multiple th:field="*{acteurs}" th:if="${!viewOnly}" class="form-select">
+                    <option th:each="participant : ${listeParticipants}" th:value="${participant.id}" th:text="${participant}"></option>
+                </select>
+                <span class="error" th:errors="*{acteurs}"></span>
+
             </div>
 
             <!-- Synopsis -->
-            <div class="form-element">
+            <div class="form-element w-100 mb-2">
                 <label>Synopsis</label>
-                <textarea disabled cols="30" rows="6" th:text="${film.synopsis}" class="form-control"></textarea>
+                <textarea th:disabled="${viewOnly}" cols="30" rows="3" th:field="*{synopsis}"  class="form-control"></textarea>
+                <span class="error" th:errors="*{synopsis}"></span>
+            </div>
+<br>
+            <div class="form-element w-100" th:if="${!viewOnly}">
+                <button class="btn btn-warning btn-lg w-100">Ajouter</button>
             </div>
 
         </form>

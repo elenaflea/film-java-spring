@@ -1,6 +1,9 @@
 package fr.eni.tp.filmotheque.bo;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,16 +18,18 @@ public class Film {
     public long id;
     @NotBlank
     public String titre;
-    @NotBlank
+    @Min(1900)
     public int annee;
-    @NotBlank
+    @Min(1)
     public int duree;
     @NotBlank
+    @Size(min=20, max=250)
     public String synopsis;
 
     /*
     * ASSOCIATIONS
      */
+    @NotNull
     private Genre genre;
     private List<Avis> avis = new ArrayList<>();
     private Participant realisateur;

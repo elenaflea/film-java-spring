@@ -4,9 +4,13 @@ import fr.eni.tp.filmotheque.bll.IFilmService;
 import fr.eni.tp.filmotheque.bll.IGenreService;
 import fr.eni.tp.filmotheque.bll.IParticipantService;
 import fr.eni.tp.filmotheque.bo.Film;
+import fr.eni.tp.filmotheque.bo.Genre;
+import fr.eni.tp.filmotheque.bo.Participant;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -26,31 +30,20 @@ public class FilmController {
     @Autowired
     private IParticipantService participantService;
 
-    /**
-     * Dans cette méthode, je vais appeler consulterFilmParId() de FilmServiceBouchon
-     * via l'interface IFilmService
-     */
-  //  public void afficherUnFilm(int i) {
-   //     System.out.println(filmService.consulterFilmParId(i));
-  //  }
-
-    /**
-     * Dans cette méthode, je vais appeler consulterFilms() de FilmServiceBouchon
-     * via l'interface IFilmService
-     */
-  //  public void afficherFilms() {
-  //      for (Film film : filmService.consulterFilms()) {
-     //       System.out.println(film);
-     //   }
-  //  }
-
     private int idCourant = 1;
     List<Film> listeFilms = new ArrayList<>();
+
+    @ModelAttribute("listeGenres")
+    public  List<Genre> listeGenres(){
+        return genreService.consulterGenres();
+    }
+    @ModelAttribute("listeParticipants")
+    public  List<Participant> listeParticipants(){
+        return participantService.consulterParticipants();
+    }
+
     @GetMapping
     public String getFilms(Model model){
-
-        // on ajoute dans le modèle la liste des formateurs à afficher
-      //  model.addAttribute("listeFilms", listeFilms);
         model.addAttribute("listeFilms", filmService.consulterFilms());
         return "films";
     }
@@ -58,12 +51,6 @@ public class FilmController {
 
     @GetMapping("/{id}")
     public String getFilmDetail(@PathVariable("id") long idFilm, Model model){
-      /*  for (Film film : listeFilms) {
-            if (film.getId() == idFilm){
-                model.addAttribute("film", film);
-            }
-        }
-        return "filmDetail";*/
 
         model.addAttribute("film", filmService.consulterFilmParId(idFilm));
         return "filmDetail";
@@ -72,13 +59,13 @@ public class FilmController {
 
     @PostMapping
     public String postFilm(
-            @RequestParam String titre,
-            @RequestParam int annee,
-            @RequestParam int duree,
-            @RequestParam String synopsis
+            @Valid Film film,
+            Model model
     ){
+        model.addAttribute("film", new Film());
+        model.addAttribute("listeGenres", genreService.consulterGenres());
+        model.addAttribute("listeParticipants", participantService.consulterParticipants());
 
-        Film film = new Film(idCourant, titre, annee, duree, synopsis);
         idCourant++;
         listeFilms.add(film);
         return "redirect:/films";
@@ -88,20 +75,15 @@ public class FilmController {
     @GetMapping("/creer")
     public String getForm(Model model){
         model.addAttribute("listeFilms", filmService.consulterFilms());
+        model.addAttribute("film", new Film());
         return "filmCreation";
     }
     @PostMapping("/creer")
-    public String postFilm2(
-            @RequestParam String titre,
-            @RequestParam int annee,
-            @RequestParam int duree,
-            @RequestParam String synopsis
-    ){
-
-        Film film = new Film(idCourant, titre, annee, duree, synopsis);
-        idCourant++;
-        listeFilms.add(film);
-        //return "redirect:/films";
-        return "filmForm";
+    public String postFilmCreation(@Valid Film film, BindingResult bindingResult, Model model){
+        if (bindingResult.hasErrors()){
+            return "filmCreation";
+        }
+        filmService.creerFilm(film);
+        return "redirect:/films";
     }
 }

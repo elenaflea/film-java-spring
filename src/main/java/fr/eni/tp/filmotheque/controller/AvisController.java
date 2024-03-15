@@ -1,7 +1,9 @@
 package fr.eni.tp.filmotheque.controller;
 
 import fr.eni.tp.filmotheque.bll.IAvisService;
+import fr.eni.tp.filmotheque.bll.IFilmService;
 import fr.eni.tp.filmotheque.bo.Avis;
+import fr.eni.tp.filmotheque.bo.Film;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,12 +11,20 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
-@RequestMapping("/avis")
+@RequestMapping("/{filmId}/avis")
 public class AvisController {
 
     @Autowired
     private IAvisService avisService;
+
+    @Autowired
+    private IFilmService filmService;
+    private static List<Film> listeFilms = new ArrayList<>();
+    public long filmId ;
     @GetMapping
     public String getAvis(Model model){
         model.addAttribute("avis", new Avis());
