@@ -27,7 +27,7 @@
             <!-- Durée -->
             <div class="form-element">
                 <label>Durée</label>
-                <input disabled th:value="${film.duree}" class="form-control">
+                <input disabled th:value="|${film.duree} minutes|" class="form-control">
             </div>
 
             <!-- Acteurs -->

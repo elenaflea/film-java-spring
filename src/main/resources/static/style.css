@@ -142,6 +142,7 @@ form .form-element button{
 table {
     border-collapse: collapse;
     width: 75%;
+    min-width: 400px;
     overflow-y: scroll;
     margin: auto;
     border-radius: 5px;

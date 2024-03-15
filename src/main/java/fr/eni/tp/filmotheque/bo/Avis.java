@@ -1,5 +1,6 @@
 package fr.eni.tp.filmotheque.bo;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,11 +11,9 @@ import lombok.NoArgsConstructor;
 public class Avis {
     public long id;
     public int note;
+    @NotBlank
     public String commentaire;
 
-    /*
-    * ASSOCIATIONS Membre <-> Avis
-     */
     private Membre membre;
 
     /*
@@ -23,4 +22,10 @@ public class Avis {
      * => association unidirectionnelle portée par la classe Film
      * Film film;
      */
+
+    public Avis(int note) {
+        this.note = note;
+    }
+
+
 }

@@ -1,41 +1,56 @@
 <html lang="en" layout:decorate="~{layout/main}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="UTF-8">
-    <title>New Genre</title>
+    <title>New Avis</title>
 </head>
 <body>
+
 <main class="flex-center" layout:fragment="content">
     <br><br>
     <div class="logo">
-        <img src="/film9.png" class="logoIcon"/>
+        <img src="/talk.png" class="logoIcon"/>
     </div>
     <br><br>
 
     <div class="welcome-container minHeight paddBtm">
-        <h5>Nouveau genre</h5>
+        <h5>Nouveau Avis pour ...</h5>
 
-
-        <form action="/genres" method="post" th:object="${genre}" class="w-100 ">
+        <form  method="post" class="w-100 " action="/avis" th:object="${avis}">
             <div class="form-element mb-3">
-                <input
-                        type="text"
-                        th:field="*{titre}"
-                        class="form-control "
-                        placeholder="Genre">
-                <span class="error" th:errors="*{titre}"></span>
+
+                <select class="form-select mt-3" aria-label="note" th:field="*{note}" style="color: #F05941;">
+                    <option th:value="1"  class="deleteBtn">&#11088;</option>
+                    <option th:value="2"  class="deleteBtn">&#11088;&#11088;</option>
+                    <option th:value="3"  class="deleteBtn">&#11088;&#11088;&#11088;</option>
+                    <option th:value="4"  class="deleteBtn">&#11088;&#11088;&#11088;&#11088;</option>
+                    <option th:value="5"  class="deleteBtn">&#11088;&#11088;&#11088;&#11088;&#11088;</option>
+                </select><span class="error" th:errors="*{note}"></span>
+
+                <textarea th:field="*{commentaire}"
+                          class="form-control mt-3"
+                          placeholder="Votre commentaire ici"
+                          id="floatingTextarea"
+                          >
+                </textarea><span class="error" th:errors="*{commentaire}"></span>
+
             </div>
 
-            <div class="form-element">
-                <button class="btn btn-warning btn-lg w-100">Ajouter</button>
+            <div class="form-element mt-3">
+                <button class="btn btn-warning btn-lg w-100">Ajouter un avis</button>
             </div>
 
         </form>
-<br><br>
-        <img th:if="${listeGenres.isEmpty()}" src="data.png" width="300px" height="300px"/>
-        <section th:if="${!listeGenres.isEmpty()}">
-            <table class="w-100 p-3 ">
+        <br><br>
+        <img th:if="${listeAvis.isEmpty()}" src="data.png" width="300px" height="300px"/>
+        <section th:if="${!listeAvis.isEmpty()}">
+            <table class="w-100 p-3">
                 <thead>
                 <tr>
+                    <th>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-star-half" viewBox="0 0 16 16">
+                            <path d="M5.354 5.119 7.538.792A.52.52 0 0 1 8 .5c.183 0 .366.097.465.292l2.184 4.327 4.898.696A.54.54 0 0 1 16 6.32a.55.55 0 0 1-.17.445l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256a.5.5 0 0 1-.146.05c-.342.06-.668-.254-.6-.642l.83-4.73L.173 6.765a.55.55 0 0 1-.172-.403.6.6 0 0 1 .085-.302.51.51 0 0 1 .37-.245zM8 12.027a.5.5 0 0 1 .232.056l3.686 1.894-.694-3.957a.56.56 0 0 1 .162-.505l2.907-2.77-4.052-.576a.53.53 0 0 1-.393-.288L8.001 2.223 8 2.226z"/>
+                        </svg>
+                    </th>
                     <th>
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chat-dots" viewBox="0 0 16 16">
                             <path d="M5 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0m3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
@@ -49,11 +64,12 @@
                 </thead>
                 <tbody>
 
-                <tr th:each="genre : ${listeGenres}">
-                    <td th:text="${genre.titre}"></td>
-                    <!-- bouton de suppression vers la page /genres/{id} -->
+                <tr th:each="avis : ${listeAvis}">
+                    <td th:text="${avis.note}"></td>
+                    <td th:text="${avis.commentaire}"></td>
+
                     <td>
-                        <form  method="post" th:action="|/genres/${genre.id}/supprimer|">
+                        <form  method="post" th:action="|/avis/${avis.id}/supprimer|">
                             <button class="deleteBtn">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
                                     <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
@@ -68,6 +84,7 @@
 
     </div>
 </main>
+
 
 </body>
 </html>

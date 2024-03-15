@@ -10,14 +10,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/genres") // toutes les urls de mon controller vont être accessibles avec le prefixe : /membres
+@RequestMapping("/genres")
 public class GenresController {
 
 
     @Autowired
     private IGenreService genreService;
-
-
 
     @GetMapping
     public String getGenres(Model model){
