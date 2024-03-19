@@ -16,6 +16,10 @@
     <h3 th:text="|Détail du film ${film.titre} (${film.annee})|"></h3>
 
         <form th:replace="~{fragments/filmForm :: form (true)}"></form>
+<button sec:authorize="isAuthenticated()" class="btn btn-warning btn-lg w-50">
+    <a class="noDeco" th:href="|/films/${film.id}/avis|"> Ajouter un avis</a>
+</button>
+
     </div>
 </main>
 

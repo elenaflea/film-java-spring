@@ -23,7 +23,7 @@ public class MembreServiceBouchon implements IMembreService {
         this.passwordEncoder = passwordEncoder;
         creerMembre(new Membre("Mace", "Cyril", "cyril","Pa$$w0rd", true));
         creerMembre(new Membre("Martin", "Aurélie", "membre", "Pa$$w0rd", false));
-        creerMembre(new Membre("Scott", "Mickael", "mike", "123456", true));
+        creerMembre(new Membre("Scott", "Mickael", "mike", "123456", false));
         creerMembre(new Membre( "Bizley", "Pamela", "pam", "123456", true));
         creerMembre(new Membre("Halper", "John", "john", "123456", true));
         creerMembre(new Membre( "Schrute", "Dwight", "dwight", "123456", false));
