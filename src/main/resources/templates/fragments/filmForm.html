@@ -60,6 +60,17 @@
                 <textarea th:disabled="${viewOnly}" cols="30" rows="3" th:field="*{synopsis}"  class="form-control"></textarea>
                 <span class="error" th:errors="*{synopsis}"></span>
             </div>
+
+
+            <div th:if="${viewOnly && film.avis.size() > 0}" class="form-element">
+                <label>Avis sur le film</label>
+
+                <ul>
+                    <li th:each="avis : ${film.avis}">
+                        <span th:text="|${avis.commentaire} [${avis.note}] - (${avis.membre.prenom})|"></span>
+                    </li>
+                </ul>
+            </div>
 <br>
             <div class="form-element w-100" th:if="${!viewOnly}">
                 <button class="btn btn-warning btn-lg w-100">Ajouter</button>

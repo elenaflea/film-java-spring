@@ -15,7 +15,7 @@
     <div class="welcome-container minHeight paddBtm">
         <h5 th:text="|Nouveau Avis pour le  film ${film.titre} (${film.annee})|"></h5>
 
-        <form  method="post" class="w-100 " th:action="@{'/films/${film.id}/avis'}" th:object="${avis}">
+        <form   class="w-100 " th:action="@{|/films/${film.id}/avis|}" method="post" th:object="${avis}">
             <div class="form-element mb-3">
 
                 <select class="form-select mt-3" aria-label="note" th:field="*{note}" style="color: #F05941;">
@@ -30,7 +30,8 @@
                           class="form-control mt-3"
                           placeholder="Votre commentaire ici"
                           id="floatingTextarea"
-                          >
+
+                          th:disabled="${viewOnly}" cols="30" rows="5" >
                 </textarea><span class="error" th:errors="*{commentaire}"></span>
 
             </div>
@@ -41,6 +42,8 @@
 
         </form>
         <br><br>
+
+        <!--
         <img th:if="${listeAvis.isEmpty()}" src="/data.png" width="300px" height="300px"/>
         <section th:if="${!listeAvis.isEmpty()}">
             <table class="w-100 p-3">
@@ -81,6 +84,7 @@
                 </tbody>
             </table>
         </section>
+        -->
 
     </div>
 </main>
