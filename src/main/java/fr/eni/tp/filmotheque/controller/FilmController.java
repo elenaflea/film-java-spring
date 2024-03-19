@@ -3,26 +3,29 @@ package fr.eni.tp.filmotheque.controller;
 import fr.eni.tp.filmotheque.bll.IFilmService;
 import fr.eni.tp.filmotheque.bll.IGenreService;
 import fr.eni.tp.filmotheque.bll.IParticipantService;
+import fr.eni.tp.filmotheque.bo.Avis;
 import fr.eni.tp.filmotheque.bo.Film;
 import fr.eni.tp.filmotheque.bo.Genre;
 import fr.eni.tp.filmotheque.bo.Participant;
+import fr.eni.tp.filmotheque.security.UtilisateurSpringSecurity;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping("/films")
+@RequestMapping("/films") // toutes les urls de mon controller vont être accessibles avec le prefixe : /films
 public class FilmController {
 
     // on crée un attribut de type IFilmService qui va être auto-injecté par Spring
     /* si on veut injecter un service, il faut penser à mettre une instance de classe dans le coontexte Spring
-    * (en ajoutant @Service avant le nom de la classe) */
+     * (en ajoutant @Service avant le nom de la classe) */
     @Autowired
     private IFilmService filmService;
     @Autowired
@@ -30,60 +33,148 @@ public class FilmController {
     @Autowired
     private IParticipantService participantService;
 
-    private int idCourant = 1;
-    List<Film> listeFilms = new ArrayList<>();
+    /**
+     * Méthodes @ModelAttribute
+     * Va faire en sorte que pour TOUS les templates référencés par mon controller
+     * les attributs suivants vont être disponible dans le modèle
+     */
 
+    // dans tous les templates : "listeGenres" va être accessible et prendre la valeur de l'appel : genreService.consulterGenres();
     @ModelAttribute("listeGenres")
     public  List<Genre> listeGenres(){
         return genreService.consulterGenres();
     }
+
+    // dans tous les templates : "listeParticipants" va être accessible et prendre la valeur de l'appel : participantService.consulterParticipants();
     @ModelAttribute("listeParticipants")
     public  List<Participant> listeParticipants(){
         return participantService.consulterParticipants();
     }
 
+
+    /**
+     * est appelé lorsque j'accède à l'url : http://localhost:8080/films
+     * va mettre dans le model la liste des films
+     * afin de pouvoir l'afficher dans la table HTML de mon template
+     * avec th:each
+     */
     @GetMapping
     public String getFilms(Model model){
+
+        // je mets dans le modèle un attribut "listeFilms" qui va contenir les films retournés par mon service
         model.addAttribute("listeFilms", filmService.consulterFilms());
+        /*
+            je retourne le template films.html
+            je vais pouvoir accéder à mon attribut listeFilms dans le template
+            via la syntaxe ${listeFilms}
+         */
         return "films";
     }
 
 
-    @GetMapping("/{id}")
-    public String getFilmDetail(@PathVariable("id") long idFilm, Model model){
+    @GetMapping("/creer")
+    public String getFilmCreation(Model model){
 
+        // afin d'utiliser th:object="${film}" dans mon template, je dois initialiser dans le modèle un attribut "genre" de type Genre
+        model.addAttribute("film", new Film());
+
+        return "filmCreation";
+    }
+
+    @PostMapping("/creer")
+    public String postFilmCreation(@Valid Film film, BindingResult bindingResult, Model model){
+
+        // si la validation échoue
+        if (bindingResult.hasErrors()){
+            // je redirige sur le template
+            return "filmCreation";
+        }
+
+        // sinon, si c'est OK, on ajoute le film
+        filmService.creerFilm(film);
+
+        // on redirige en GET (nouvelle requête) sur la page qui liste tous les films
+        return "redirect:/films";
+    }
+
+
+    /**
+     * est appelé lorsque j'accède à l'url : http://localhost:8080/films/{idFilm}
+     * va mettre dans le model le film qui correspond à l'id passé en paramètre
+     * afin de pouvoir l'afficher dans le HTML de mon template
+     *
+     * Pour recupérer l'id depuis l'url
+     * on utilise un argument @PathVariable("idFilm") long idFilm
+     */
+    @GetMapping("/{idFilm}")
+    public String getFilmDetail(@PathVariable("idFilm") long idFilm, Model model){
+
+        // je mets dans le modèle un attribut "film" qui va contenir le film correspondant à l'id : idFilm
         model.addAttribute("film", filmService.consulterFilmParId(idFilm));
+        /*
+            je retourne le template filmDetail.html
+            je vais pouvoir accéder à mon attribut film dans le template
+            via la syntaxe ${film}
+         */
         return "filmDetail";
     }
 
+    /**
+     * est appelé lorsque j'accède à l'url : http://localhost:8080/films/{idFilm}/avis
+     * va mettre dans le model le film qui correspond à l'id passé en paramètre
+     * afin de pouvoir l'afficher dans le HTML de mon template
+     *
+     * Pour recupérer l'id depuis l'url
+     * on utilise un argument @PathVariable("idFilm") long idFilm
+     */
+    @GetMapping("/{idFilm}/avis")
+    public String getFilmAvisForm(@PathVariable("idFilm") long idFilm, Model model){
 
-    @PostMapping
-    public String postFilm(
-            @Valid Film film,
-            Model model
-    ){
-        model.addAttribute("film", new Film());
-        model.addAttribute("listeGenres", genreService.consulterGenres());
-        model.addAttribute("listeParticipants", participantService.consulterParticipants());
-
-        idCourant++;
-        listeFilms.add(film);
-        return "redirect:/films";
+        // je mets dans le modèle un attribut "film" qui va contenir le film correspondant à l'id : idFilm
+        model.addAttribute("film", filmService.consulterFilmParId(idFilm));
+        model.addAttribute("avis", new Avis());
+        /*
+            je retourne le template filmDetail.html
+            je vais pouvoir accéder à mon attribut film dans le template
+            via la syntaxe ${film}
+         */
+        return "avis";
     }
 
+    /**
+     * est appelé lorsque je valide le formulaire de création d'avis
+     *
+     * On va récupérer :
+     * - l'avis rempli par le formulaire
+     * - l'id du film correspondant à l'url
+     * - l'utilisateur connecté avec @Aute
+     *
+     * va mettre dans le model le film qui correspond à l'id passé en paramètre
+     * afin de pouvoir l'afficher dans le HTML de mon template
+     *
+     * Pour recupérer l'id depuis l'url
+     * on utilise un argument @PathVariable("idFilm") long idFilm
+     */
+    @PostMapping("/{idFilm}/avis")
+    public String postFilmAvisForm(@Valid Avis avis, BindingResult bindingResult, @PathVariable("idFilm") long idFilm, @AuthenticationPrincipal UtilisateurSpringSecurity utilisateurConnecte){
 
-    @GetMapping("/creer")
-    public String getForm(Model model){
-        model.addAttribute("listeFilms", filmService.consulterFilms());
-        model.addAttribute("film", new Film());
-        return "filmCreation";
-    }
-    @PostMapping("/creer")
-    public String postFilmCreation(@Valid Film film, BindingResult bindingResult, Model model){
+        // si l'avis n'est pas valide
         if (bindingResult.hasErrors()){
-            return "filmCreation";
+            // je renvoie vers le template de création d'avis
+            return "avis";
         }
-        filmService.creerFilm(film);
-        return "redirect:/films";
+
+        /**  sinon **/
+
+        // 1- j'ajoute le membre connecté à l'avis
+        avis.setMembre(utilisateurConnecte.getMembre());
+
+        // 2 - je crée l'avis
+        filmService.publierAvis(avis, idFilm);
+
+        // 3 - je redirige ensuite sur la page de détail du film
+        return "redirect:/films/" + idFilm;
     }
+
+
 }

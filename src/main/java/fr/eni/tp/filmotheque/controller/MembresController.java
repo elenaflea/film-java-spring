@@ -4,8 +4,10 @@ import fr.eni.tp.filmotheque.bll.IMembreService;
 import fr.eni.tp.filmotheque.bll.IParticipantService;
 import fr.eni.tp.filmotheque.bo.Membre;
 import fr.eni.tp.filmotheque.bo.Participant;
+import fr.eni.tp.filmotheque.security.UtilisateurSpringSecurity;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,14 +24,22 @@ public class MembresController {
     private IMembreService membreService;
 
     @GetMapping
-    public String getMembres(Model model){
+    public String getMembres(
+            Model model,
+            @AuthenticationPrincipal UtilisateurSpringSecurity utilisateurConnecte
+    ){
         model.addAttribute("membre", new Membre());
         model.addAttribute("listeMembres", membreService.consulterMembres());;
         return "membres";
     }
 
     @PostMapping
-    public String postMembre(@Valid Membre membre, BindingResult bindingResult, Model model){
+    public String postMembre(
+            @Valid Membre membre,
+            BindingResult bindingResult,
+            Model model,
+            @AuthenticationPrincipal UtilisateurSpringSecurity utilisateurConnecte
+    ){
         if (bindingResult.hasErrors()){
             model.addAttribute("listeMembres", membreService.consulterMembres());
             return "membres";
@@ -39,7 +49,9 @@ public class MembresController {
     }
 
     @PostMapping("/{id}/supprimer")
-    public String deleteMembre(@PathVariable("id") long id){
+    public String deleteMembre(
+            @PathVariable("id") long id,
+            @AuthenticationPrincipal UtilisateurSpringSecurity utilisateurConnecte){
         membreService.supprimerMembreParId(id);
         return "redirect:/membres";
     }

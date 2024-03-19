@@ -10,7 +10,7 @@
     <div class="logo">
         <img src="/film8.png" class="logoIcon"/>
     </div>
-    <br><br>
+    <br><h6 class="headName" th:text="|${#authentication.name}|" sec:authorize="isAuthenticated()"></h6><br>
 
     <div class="welcome-container paddBtm">
     <h3 th:text="|Détail du film ${film.titre} (${film.annee})|"></h3>

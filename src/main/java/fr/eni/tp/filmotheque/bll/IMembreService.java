@@ -14,4 +14,6 @@ public interface IMembreService {
     void supprimerMembreParId(long id);
 
     void creerMembre(Membre membre);
+
+    Membre consulterMembreParPseudo(String username);
 }

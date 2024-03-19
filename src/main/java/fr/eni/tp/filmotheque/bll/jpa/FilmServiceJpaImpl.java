@@ -1,7 +1,7 @@
-package fr.eni.tp.filmotheque.bll.mock;
+package fr.eni.tp.filmotheque.bll.jpa;
 
-import fr.eni.tp.filmotheque.bll.jpa.GenreServiceJpaImpl;
 import fr.eni.tp.filmotheque.bll.IFilmService;
+import fr.eni.tp.filmotheque.bll.IGenreService;
 import fr.eni.tp.filmotheque.bll.IParticipantService;
 import fr.eni.tp.filmotheque.bo.*;
 import org.springframework.context.annotation.Profile;
@@ -17,20 +17,21 @@ import java.util.List;
  * @Service permet de rendre une instance de cette classe
  * disponible dans le contexte Spring (obligatoire afin d'être injectée)
  *
- * @Profile("dev")
- * Specifie que cette classe est activée UNIQUEMENT lorsqu'on a le profil "dev"
+ * @Profile("prod")
+ * Specifie que cette classe est activée UNIQUEMENT lorsqu'on a le profil "prod"
  * dans application.properties
  */
 @Service
-@Profile("dev")
-public class FilmServiceBouchon implements IFilmService {
+@Profile("prod")
+/**
+ * TODO A Modifier plus tard pour utiliser le repository
+ */
+public class FilmServiceJpaImpl implements IFilmService {
 	// Attributs statiques pour gérer les valeurs à afficher et simuler les données
 	// en base
 
 	// on référence nos services des Genres et des participants
-	//private IGenreService genreService;
-	private GenreServiceJpaImpl genreService;
-
+	private IGenreService genreService;
 	private IParticipantService participantService;
 
 	private static List<Film> lstFilms = new ArrayList<>();
@@ -39,12 +40,12 @@ public class FilmServiceBouchon implements IFilmService {
 	private static int indexFilms = 1;
 	private static int indexAvis = 1;
 
-	public FilmServiceBouchon(GenreServiceJpaImpl genreService, IParticipantService participantService) {
+	public FilmServiceJpaImpl(IGenreService genreService, IParticipantService participantService) {
 		this.genreService = genreService;
 		this.participantService = participantService;
 		lstGenres = genreService.consulterGenres();
 		lstParticipants = participantService.consulterParticipants();
-		simulationCoucheDALetDB();
+		// simulationCoucheDALetDB();
 	}
 
 	@Override
@@ -131,7 +132,7 @@ public class FilmServiceBouchon implements IFilmService {
 
 		Film theBFG = new Film(indexFilms++, "The BFG", 2016, 117,
 				"Le Bon Gros Géant est un géant bien différent des autres habitants du Pays des Géants.");
-		//theBFG.setGenre(lstGenres.get(4));
+		theBFG.setGenre(lstGenres.get(4));
 		theBFG.setRealisateur(consulterParticipantParId(1));
 		// Associer les acteurs
 		theBFG.getActeurs().add(consulterParticipantParId(7));
@@ -141,7 +142,7 @@ public class FilmServiceBouchon implements IFilmService {
 
 		Film bienvenueChezLesChtis = new Film(indexFilms++, "Bienvenue chez les Ch'tis", 2008, 106,
 				"Philippe Abrams est directeur de la poste de Salon-de-Provence. Il est marié à Julie, dont le caractère dépressif lui rend la vie impossible. Pour lui faire plaisir, Philippe fraude afin d'obtenir une mutation sur la Côte d'Azur. Mais il est démasqué: il sera muté à Bergues, petite ville du Nord.");
-	//	bienvenueChezLesChtis.setGenre(lstGenres.get(4));
+		bienvenueChezLesChtis.setGenre(lstGenres.get(4));
 		bienvenueChezLesChtis.setRealisateur(consulterParticipantParId(3));
 		// Associer les acteurs
 		bienvenueChezLesChtis.getActeurs().add(consulterParticipantParId(3));

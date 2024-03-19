@@ -12,6 +12,9 @@ body{
 header{
     color: #fff;
 }
+.headName{
+    color: #fff;
+}
 footer{
     margin: 0;
     align-self: center;
@@ -162,7 +165,7 @@ table th {
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: center;
-    background-color: #161A30;
+    background-color: #424769;
     color: white;
 }
 

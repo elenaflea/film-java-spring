@@ -9,13 +9,13 @@
     <div class="logo">
         <img src="/film9.png" class="logoIcon"/>
     </div>
-    <br><br>
+    <br><h6 class="headName" th:text="|${#authentication.name}|" sec:authorize="isAuthenticated()"></h6><br>
 
     <div class="welcome-container minHeight paddBtm">
         <h5>Nouveau genre</h5>
 
 
-        <form action="/genres" method="post" th:object="${genre}" class="w-100 ">
+        <form th:action="@{'/genres'}" method="post" th:object="${genre}" class="w-100 ">
             <div class="form-element mb-3">
                 <input
                         type="text"

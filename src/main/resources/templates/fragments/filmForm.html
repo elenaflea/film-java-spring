@@ -1,6 +1,6 @@
 
 
-        <form  class="w-100" th:fragment="form(viewOnly)" th:object="${film}">
+        <form  class="w-750" th:fragment="form(viewOnly)" th:object="${film}">
             <div class="form-element mb-2 w-100">
                 <label>Genre</label>
                 <select th:disabled="${viewOnly}" th:field="*{genre}" class="form-select">

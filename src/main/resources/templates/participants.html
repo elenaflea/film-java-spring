@@ -10,13 +10,13 @@
     <div class="logo">
         <img src="/film10.png" class="logoIcon"/>
     </div>
-    <br><br>
+    <br><h6 class="headName" th:text="|${#authentication.name}|" sec:authorize="isAuthenticated()"></h6><br>
 
     <div class="welcome-container minHeight paddBtm">
         <h5>Ajouter un acteur ou réalisateur</h5>
 
 
-        <form action="/participants" method="post" th:object="${participant}" class="w-100 ">
+        <form th:action="@{'/participants'}"   method="post" th:object="${participant}" class="w-100 ">
             <div class="form-element mb-3">
                 <input
                         type="text"
