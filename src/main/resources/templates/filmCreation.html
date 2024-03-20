@@ -14,7 +14,10 @@
     <div class="welcome-container minHeight paddBtm">
         <h5 >Ajouter un film</h5>
 
-        <form th:action="@{/films/creer}" th:replace="~{fragments/filmForm :: form (false)}" method="POST">
+    <!--    <form th:action="@{/films/creer}" th:replace="~{fragments/filmForm :: form (false)}" method="POST">
+        </form>
+-->
+        <form  th:replace="~{fragments/filmForm :: form (false)}" >
         </form>
 
     </div>

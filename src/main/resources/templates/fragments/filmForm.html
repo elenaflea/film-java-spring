@@ -1,6 +1,6 @@
 
 
-        <form  class="w-750" th:fragment="form(viewOnly)" th:object="${film}">
+        <form  th:fragment="form(viewOnly)" th:object="${film}" th:action="@{/films/creer}" method="POST">
             <div class="form-element mb-2 w-100">
                 <label>Genre</label>
                 <select th:disabled="${viewOnly}" th:field="*{genre}" class="form-select">
@@ -42,14 +42,18 @@
 
 
             <!-- Acteurs -->
-            <div class="form-element mb-2 w-100">
+            <div class="form-element">
                 <label>Acteurs</label>
                 <ul th:if="${viewOnly}">
                     <li th:each="acteur : ${film.acteurs}" th:text="${acteur}"></li>
                 </ul>
-                <select multiple th:field="*{acteurs}" th:if="${!viewOnly}" class="form-select">
-                    <option th:each="participant : ${listeParticipants}" th:value="${participant.id}" th:text="${participant}"></option>
-                </select>
+                <section th:if="${!viewOnly}" class="checkbox-list">
+                    <div  th:each="participant : ${listeParticipants}">
+                        <input type="checkbox" th:field="*{acteurs}" th:value="${participant.id}" th:id="|checkbox_${participant.id}|">
+                        <label th:text="${participant}" th:for="|checkbox_${participant.id}|"></label>
+                    </div>
+
+                </section>
                 <span class="error" th:errors="*{acteurs}"></span>
 
             </div>

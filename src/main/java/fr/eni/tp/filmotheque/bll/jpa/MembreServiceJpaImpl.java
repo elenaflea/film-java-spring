@@ -2,109 +2,76 @@ package fr.eni.tp.filmotheque.bll.jpa;
 
 import fr.eni.tp.filmotheque.bll.IMembreService;
 import fr.eni.tp.filmotheque.bo.Membre;
+import fr.eni.tp.filmotheque.dal.MembreRepository;
+import jakarta.validation.ConstraintViolation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-/**
- * Implémentation de l'interface IMembreService
- * qui va être injectée dans le controller MembreController
- *
- * @Service permet de rendre une instance de cette classe
- * disponible dans le contexte Spring (obligatoire afin d'être injectée)
- *
- * @Profile("prod")
- * Specifie que cette classe est activée UNIQUEMENT lorsqu'on a le profil "prod"
- * dans application.properties
- */
 @Service
 @Profile("prod")
-/**
- * TODO A Modifier plus tard pour utiliser le repository
- */
 public class MembreServiceJpaImpl implements IMembreService {
 
-    /*
-     * Dans l'implémentation "bouchon"
-     * on gère les membres dans une liste
-     */
-    private  List<Membre> listeMembres = new ArrayList<>();
-
+    // @Autowired : pas besoin car PasswordEncoder est injecté dans le constructeur
+    private MembreRepository membreRepository;
     // @Autowired : pas besoin car PasswordEncoder est injecté dans le constructeur
     private PasswordEncoder passwordEncoder;
 
-    /*
-    Dans le constructeur
-    * On initialise la liste des membres
-    on injecte PasswordEncoder passwordEncoder
-     */
-    public MembreServiceJpaImpl(PasswordEncoder passwordEncoder) {
+    public MembreServiceJpaImpl(PasswordEncoder passwordEncoder, MembreRepository membreRepository) throws Exception{
         this.passwordEncoder = passwordEncoder;
-        creerMembre(new Membre("Mace", "Cyril", "cyril","Pa$$w0rd", true));
-        creerMembre(new Membre("Martin", "Aurélie", "membre", "Pa$$w0rd", false));
-        creerMembre(new Membre("Scott", "Mickael", "mike", "123456", true));
-        creerMembre(new Membre( "Bizley", "Pamela", "pam", "123456", true));
-        creerMembre(new Membre("Halper", "John", "john", "123456", true));
-        creerMembre(new Membre( "Schrute", "Dwight", "dwight", "123456", false));
+        this.membreRepository = membreRepository;
+
+
+        if (membreRepository.findAll().size() == 0){
+            creerMembre(new Membre("admin", "admin", "admin","admin", true));
+        }
+
     }
-
-
-
-    // on gère un compteur pour l'id (qui simule l'auto-increment de la base de donnée)
-    private int idCourant = 1;
 
     @Override
     public List<Membre> consulterMembres() {
-        return listeMembres;
+        return membreRepository.findAll();
     }
 
     @Override
     public Membre consulterMembreParId(long id) {
-        // on recherche dans la liste le membre d'id "id"
-        for (Membre membre : listeMembres) {
-            if (membre.getId() == id){
-                return membre;
-            }
-        }
-        // on retourne null si pas trouvé
-        return null;
+        return membreRepository.findById(id).orElse(null); // si on utilise .orElse(null); à la place de .get(), ca ne plante pas si l'utilisateur n'existe pas mais ca renvoie null
     }
 
     @Override
     public Membre consulterMembreParPseudo(String pseudo) {
-        // je vais chercher le membre qui correspond au pseudo
-        for (Membre membre : listeMembres) {
+        for (Membre membre : consulterMembres()) {
             if (membre.getPseudo().equals(pseudo)) {
-                // lorsque je trouve le membre, je le renvoie
                 return membre;
             }
         }
-        // si le membre n'est pas trouvé, je renvoie null
         return null;
     }
 
     @Override
     public void supprimerMembreParId(long id) {
-        // on recherche dans la liste l'index correspondant au membre d'id "id"
-        for (int index = 0; index < listeMembres.size(); index++) {
-            if (listeMembres.get(index).getId() == id){
-                listeMembres.remove(index);
-            }
-        }
+        membreRepository.deleteById(id);
     }
 
     @Override
-    public void creerMembre(Membre membre) {
-        // on rajoute l'id au membre (tout en l'incrémentant)
-        membre.setId(idCourant++);
+    public void creerMembre(Membre membre) throws Exception {
+
+        // VALIDATION : je vais vérifier qu'un membre avec le même pseudo n'existe pas déjà en base
+        // TODO : lancer un autre type d'exception plus specifique qui sera reprise par le template
+        if (consulterMembreParPseudo(membre.getPseudo()) != null){
+            throw new Exception("Erreur : Le pseudo est déjà utilisé par quelqu'un d'autre");
+        }
 
         // NE PAS OUBLIER de mettre à jour le mot de passe en l'encodant
         membre.setMotDePasse(passwordEncoder.encode(membre.getMotDePasse()));
 
-        // on rajoute le membre à la liste
-        listeMembres.add(membre);
+        // on sauvegarde le membre en base de donnée
+        membreRepository.save(membre);
     }
 }

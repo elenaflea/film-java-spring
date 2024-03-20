@@ -18,14 +18,7 @@ public interface IFilmService {
 
     Film consulterFilmParId(long id);
 
-    List<Genre> consulterGenres();
-
-    List<Participant> consulterParticipants();
-
-    Genre consulterGenreParId(long id);
-
-    Participant consulterParticipantParId(long id);
-
     void creerFilm(Film film);
+
     void publierAvis(Avis avis, long idFilm);
 }

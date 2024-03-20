@@ -1,7 +1,11 @@
 package fr.eni.tp.filmotheque.bll.jpa;
 
 import fr.eni.tp.filmotheque.bll.IParticipantService;
+import fr.eni.tp.filmotheque.bo.Membre;
 import fr.eni.tp.filmotheque.bo.Participant;
+import fr.eni.tp.filmotheque.dal.MembreRepository;
+import fr.eni.tp.filmotheque.dal.ParticipantRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -21,68 +25,51 @@ import java.util.List;
  */
 @Service
 @Profile("prod")
-/**
- * TODO A Modifier plus tard pour utiliser le repository
- */
 public class ParticipantServiceJpaImpl implements IParticipantService {
 
-    /*
-     * Dans l'implémentation "bouchon"
-     * on gère les participants dans une liste
-     */
-    private  List<Participant> listeParticipants = new ArrayList<>();
+    // @Autowired : pas besoin car PasswordEncoder est injecté dans le constructeur
+    private ParticipantRepository participantRepository;
 
     /*
      * On initialise la liste des participants
      */
-    public ParticipantServiceJpaImpl() {
-        creerParticipant(new Participant("Spielberg", "Steven"));
-        creerParticipant(new Participant("Cronenberg", "David"));
-        creerParticipant(new Participant("Boon", "Dany"));
-        creerParticipant(new Participant("Attenborough", "Richard"));
-        creerParticipant(new Participant("Davis", "Geena"));
-        creerParticipant(new Participant("Rylance", "Mark"));
-        creerParticipant(new Participant("Merad", "Kad"));
+    public ParticipantServiceJpaImpl(ParticipantRepository participantRepository) {
 
+        this.participantRepository = participantRepository;
+
+        /**
+         * A la création du service, on vérifie si un participnt existe dans l'application.
+         * Si aucun n'existe, on créer des participants de base
+         */
+        if (participantRepository.findAll().size() == 0){
+            creerParticipant(new Participant("Spielberg", "Steven"));
+            creerParticipant(new Participant("Cronenberg", "David"));
+            creerParticipant(new Participant("Boon", "Dany"));
+            creerParticipant(new Participant("Attenborough", "Richard"));
+            creerParticipant(new Participant("Davis", "Geena"));
+            creerParticipant(new Participant("Rylance", "Mark"));
+            creerParticipant(new Participant("Merad", "Kad"));
+        }
     }
-
-
-
-    // on gère un compteur pour l'id (qui simule l'auto-increment de la base de donnée)
-    private int idCourant = 1;
 
     @Override
     public List<Participant> consulterParticipants() {
-        return listeParticipants;
+
+        return participantRepository.findAll();
     }
 
     @Override
     public Participant consulterParticipantParId(long id) {
-        // on recherche dans la liste le participant d'id "id"
-        for (Participant participant : listeParticipants) {
-            if (participant.getId() == id){
-                return participant;
-            }
-        }
-        // on retourne null si pas trouvé
-        return null;
+        return participantRepository.findById(id).orElse(null);
     }
 
     @Override
     public void supprimerParticipantParId(long id) {
-        // on recherche dans la liste l'index correspondant au participant d'id "id"
-        for (int index = 0; index < listeParticipants.size(); index++) {
-            if (listeParticipants.get(index).getId() == id){
-                listeParticipants.remove(index);
-            }
-        }
+        participantRepository.deleteById(id);
     }
 
     @Override
     public void creerParticipant(Participant participant) {
-        // on rajoute l'id au participant (tout en l'incrémentant)
-        participant.setId(idCourant++);
-        // on rajoute le participant à la liste
-        listeParticipants.add(participant);
+        participantRepository.save(participant);
     }
 }

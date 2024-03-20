@@ -34,17 +34,19 @@ public class MembresController {
     }
 
     @PostMapping
-    public String postMembre(
-            @Valid Membre membre,
-            BindingResult bindingResult,
-            Model model,
-            @AuthenticationPrincipal UtilisateurSpringSecurity utilisateurConnecte
-    ){
+    public String postMembres(@Valid Membre membre, BindingResult bindingResult, Model model){
         if (bindingResult.hasErrors()){
             model.addAttribute("listeMembres", membreService.consulterMembres());
             return "membres";
         }
-        membreService.creerMembre(membre);
+        try{
+            membreService.creerMembre(membre);
+        }
+        catch(Exception e){
+            model.addAttribute("exception", e.getMessage());
+            model.addAttribute("listeMembres", membreService.consulterMembres());
+            return "membres";
+        }
         return "redirect:/membres";
     }
 

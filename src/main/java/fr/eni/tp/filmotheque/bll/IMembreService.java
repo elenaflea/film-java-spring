@@ -13,7 +13,7 @@ public interface IMembreService {
 
     void supprimerMembreParId(long id);
 
-    void creerMembre(Membre membre);
+    void creerMembre(Membre genre) throws Exception;
 
     Membre consulterMembreParPseudo(String username);
 }

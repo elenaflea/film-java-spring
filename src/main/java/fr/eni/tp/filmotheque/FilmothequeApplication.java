@@ -16,18 +16,6 @@ public class FilmothequeApplication {
 
 
 
-		// Affichage du film d'identiant 1
-	//	System.out.println("\nLe film d'identiant 1 est : ");
-	//	controller.afficherUnFilm(1);
-
-	//	controller.afficherUnFilm(1);
-		
-		
-		// Affichage de la liste des films
-	//	System.out.println("\n");
-		//controller.afficherFilms();
-
-
 	}
 
 }
