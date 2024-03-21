@@ -6,6 +6,7 @@ import fr.eni.tp.filmotheque.dal.MembreRepository;
 import jakarta.validation.ConstraintViolation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +39,7 @@ public class MembreServiceJpaImpl implements IMembreService {
     public List<Membre> consulterMembres() {
         return membreRepository.findAll();
     }
+
 
     @Override
     public Membre consulterMembreParId(long id) {

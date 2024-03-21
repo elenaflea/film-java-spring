@@ -4,9 +4,13 @@ import fr.eni.tp.filmotheque.bll.IMembreService;
 import fr.eni.tp.filmotheque.bll.IParticipantService;
 import fr.eni.tp.filmotheque.bo.Membre;
 import fr.eni.tp.filmotheque.bo.Participant;
+import fr.eni.tp.filmotheque.dal.MembreRepository;
+import fr.eni.tp.filmotheque.dto.SearchParamMembre;
 import fr.eni.tp.filmotheque.security.UtilisateurSpringSecurity;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,15 +26,30 @@ public class MembresController {
 
     @Autowired
     private IMembreService membreService;
+    @Autowired
+    private MembreRepository membreRepository;
 
     @GetMapping
     public String getMembres(
+            SearchParamMembre searchParam,
             Model model,
             @AuthenticationPrincipal UtilisateurSpringSecurity utilisateurConnecte
     ){
         model.addAttribute("membre", new Membre());
-        model.addAttribute("listeMembres", membreService.consulterMembres());;
+
+        if (searchParam.getSearch() != null || searchParam.getPseudo() != null){
+
+            Pageable pageable = PageRequest.of(searchParam.getCurrentPage(), 10);
+            model.addAttribute("listeMembres", membreRepository.rechercher());
+            model.addAttribute("searchParam", new SearchParamMembre());
+        }
+        else {
+            model.addAttribute("listeMembres", membreService.consulterMembres());;
+        }
         return "membres";
+
+
+
     }
 
     @PostMapping
