@@ -7,15 +7,10 @@ import fr.eni.tp.filmotheque.bo.Avis;
 import fr.eni.tp.filmotheque.bo.Film;
 import fr.eni.tp.filmotheque.bo.Genre;
 import fr.eni.tp.filmotheque.bo.Participant;
-import fr.eni.tp.filmotheque.dal.FilmRepository;
-import fr.eni.tp.filmotheque.dal.MembreRepository;
-import fr.eni.tp.filmotheque.dto.SearchParamFilm;
-import fr.eni.tp.filmotheque.dto.SearchParamMembre;
+import fr.eni.tp.filmotheque.dto.SearchParam;
 import fr.eni.tp.filmotheque.security.UtilisateurSpringSecurity;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
@@ -26,44 +21,62 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/films")
+@RequestMapping("/films") // toutes les urls de mon controller vont être accessibles avec le prefixe : /films
 public class FilmController {
 
+    // on crée un attribut de type IFilmService qui va être auto-injecté par Spring
+    /* si on veut injecter un service, il faut penser à mettre une instance de classe dans le coontexte Spring
+     * (en ajoutant @Service avant le nom de la classe) */
     @Autowired
     private IFilmService filmService;
     @Autowired
     private IGenreService genreService;
     @Autowired
     private IParticipantService participantService;
-    @Autowired
-    private FilmRepository filmRepository;
 
-    ;
+    /**
+     * Méthodes @ModelAttribute
+     * Va faire en sorte que pour TOUS les templates référencés par mon controller
+     * les attributs suivants vont être disponible dans le modèle
+     */
+
+    // dans tous les templates : "listeGenres" va être accessible et prendre la valeur de l'appel : genreService.consulterGenres();
     @ModelAttribute("listeGenres")
     public  List<Genre> listeGenres(){
         return genreService.consulterGenres();
     }
 
+    // dans tous les templates : "listeParticipants" va être accessible et prendre la valeur de l'appel : participantService.consulterParticipants();
     @ModelAttribute("listeParticipants")
     public  List<Participant> listeParticipants(){
         return participantService.consulterParticipants();
     }
 
 
+    /**
+     * est appelé lorsque j'accède à l'url : http://localhost:8080/films
+     * va mettre dans le model la liste des films
+     * afin de pouvoir l'afficher dans la table HTML de mon template
+     * avec th:each
+     */
     @GetMapping
-    public String getFilms(SearchParamFilm searchParam, Model model){
+    public String getFilms(SearchParam searchParam, Model model){
 
-
-        if (searchParam.getSearch() != null ){
-
-            Pageable pageable = PageRequest.of(searchParam.getCurrentPage(), 10);
-            model.addAttribute("listeMembres", filmRepository.rechercher());
-            model.addAttribute("searchParam", new SearchParamMembre());
+        // Si jamais j'ai un paramètre de recherche
+        if (searchParam.getSearch() != null){
+            // je mets dans le modèle les films possèdant le titre donné
+            model.addAttribute("listeFilms", filmService.rechercher(searchParam));
         }
-        else {
+        // sinon, je mets dans le modèle tous les films
+        else{
             model.addAttribute("listeFilms", filmService.consulterFilms());
         }
 
+        /*
+            je retourne le template films.html
+            je vais pouvoir accéder à mon attribut listeFilms dans le template
+            via la syntaxe ${listeFilms}
+         */
         return "films";
     }
 
@@ -71,6 +84,7 @@ public class FilmController {
     @GetMapping("/creer")
     public String getFilmCreation(Model model){
 
+        // afin d'utiliser th:object="${film}" dans mon template, je dois initialiser dans le modèle un attribut "genre" de type Genre
         model.addAttribute("film", new Film());
 
         return "filmCreation";
@@ -78,10 +92,17 @@ public class FilmController {
 
     @PostMapping("/creer")
     public String postFilmCreation(@Valid Film film, BindingResult bindingResult, Model model){
+
+        // si la validation échoue
         if (bindingResult.hasErrors()){
+            // je redirige sur le template
             return "filmCreation";
         }
+
+        // sinon, si c'est OK, on ajoute le film
         filmService.creerFilm(film);
+
+        // on redirige en GET (nouvelle requête) sur la page qui liste tous les films
         return "redirect:/films";
     }
 

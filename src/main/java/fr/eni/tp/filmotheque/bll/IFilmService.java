@@ -4,6 +4,7 @@ import fr.eni.tp.filmotheque.bo.Avis;
 import fr.eni.tp.filmotheque.bo.Film;
 import fr.eni.tp.filmotheque.bo.Genre;
 import fr.eni.tp.filmotheque.bo.Participant;
+import fr.eni.tp.filmotheque.dto.SearchParam;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,4 +22,6 @@ public interface IFilmService {
     void creerFilm(Film film);
 
     void publierAvis(Avis avis, long idFilm);
+
+    List<Film> rechercher(SearchParam searchParam);
 }

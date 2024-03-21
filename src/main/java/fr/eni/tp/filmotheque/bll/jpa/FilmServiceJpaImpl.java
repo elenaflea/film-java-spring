@@ -1,16 +1,14 @@
 package fr.eni.tp.filmotheque.bll.jpa;
 
 import fr.eni.tp.filmotheque.bll.IFilmService;
-import fr.eni.tp.filmotheque.bll.IGenreService;
-import fr.eni.tp.filmotheque.bll.IParticipantService;
 import fr.eni.tp.filmotheque.bo.*;
 import fr.eni.tp.filmotheque.dal.AvisRepository;
 import fr.eni.tp.filmotheque.dal.FilmRepository;
+import fr.eni.tp.filmotheque.dto.SearchParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -71,5 +69,11 @@ public class FilmServiceJpaImpl implements IFilmService {
 
 		// 2 - je sauvegarde l'avis, si j'ai mis (cascade = CascadeType.ALL) : ca devrait ajouter l'avis en base de donnée
 		avisRepository.save(avis);
+	}
+
+	@Override
+	public List<Film> rechercher(SearchParam searchParam) {
+		// return filmRepository.findByTitreStartingWithOrGenreTitreStartingWithOrRealisateurPrenomStartingWithOrRealisateurNomStartingWith(searchParam.getSearch(),searchParam.getSearch(), searchParam.getSearch(), searchParam.getSearch());
+		return filmRepository.recherche(searchParam);
 	}
 }

@@ -165,8 +165,8 @@ table th {
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: center;
-    background-color: #424769;
-    color: white;
+  /*  background-color: #424769;
+    color: white;*/
 }
 
 .tableGenre{

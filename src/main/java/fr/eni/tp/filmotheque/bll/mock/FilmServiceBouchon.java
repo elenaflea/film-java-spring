@@ -4,6 +4,7 @@ import fr.eni.tp.filmotheque.bll.IFilmService;
 import fr.eni.tp.filmotheque.bll.IGenreService;
 import fr.eni.tp.filmotheque.bll.IParticipantService;
 import fr.eni.tp.filmotheque.bo.*;
+import fr.eni.tp.filmotheque.dto.SearchParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -89,6 +90,11 @@ public class FilmServiceBouchon implements IFilmService {
 			filmSelectionne.getAvis().add(avis);
 		}
 
+	}
+
+	@Override
+	public List<Film> rechercher(SearchParam searchParam) {
+		return null;
 	}
 
 
