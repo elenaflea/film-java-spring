@@ -25,7 +25,7 @@ public class GenresController {
 
 
     @GetMapping
-    public String getGenres(Model model){
+    public String getGenres(Model model) {
         // afin d'utiliser th:object="${genre}" dans mon template, je dois initialiser dans le modèle un attribut "genre" de type Genre
         model.addAttribute("genre", new Genre());
         // on ajoute également la liste des genres au modèle (recupérées grâce au service)
@@ -35,9 +35,9 @@ public class GenresController {
     }
 
     @PostMapping
-    public String postGenres(@Valid Genre genre, BindingResult bindingResult, Model model){
+    public String postGenres(@Valid Genre genre, BindingResult bindingResult, Model model) {
         // si jamais la validation échoue
-        if (bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             // on ajoute la liste des genres au modèle (recupérées grâce au service)
             model.addAttribute("listeGenres", genreService.consulterGenres());
             // on renvoie vers le template
@@ -55,7 +55,7 @@ public class GenresController {
      * => je suis obligé d'uriliser un POST
      */
     @PostMapping("/{id}/supprimer")
-    public String deleteGenre(@PathVariable("id") long id){
+    public String deleteGenre(@PathVariable("id") long id) {
         // on supprime le genre
         genreService.supprimerGenreParId(id);
 

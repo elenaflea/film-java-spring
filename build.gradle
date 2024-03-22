@@ -38,6 +38,8 @@ dependencies {
     // dépendance utilisée pour les layout
     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
     runtimeOnly 'com.microsoft.sqlserver:mssql-jdbc'
+
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
 }
 
 tasks.named('test') {

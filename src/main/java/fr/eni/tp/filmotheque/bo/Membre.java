@@ -1,5 +1,6 @@
 package fr.eni.tp.filmotheque.bo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,6 +19,7 @@ import java.util.List;
 public class Membre extends Personne{
 
     private String pseudo;
+    @JsonIgnore
     private String motDePasse;
     private boolean admin;
 
