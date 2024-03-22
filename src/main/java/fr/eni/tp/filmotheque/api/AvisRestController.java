@@ -1,4 +1,4 @@
-package fr.eni.tp.filmotheque.bll.api;
+package fr.eni.tp.filmotheque.api;
 
 import fr.eni.tp.filmotheque.bll.IFilmService;
 import fr.eni.tp.filmotheque.bll.IGenreService;
@@ -29,17 +29,17 @@ public class AvisRestController {
     private AvisRepository avisRepository;
 
 
-    @GetMapping("/{idFilm}/avis")
+   /* @GetMapping("/{idFilm}/avis")
     public List getAllAvisParFilm(@PathVariable("idFilm") long idFilm, Model model){
         return avisRepository.findAll();
 
     }
-
-    @GetMapping("/{idFilm}/avis/{id}")
+*/
+ /*   @GetMapping("/{idFilm}/avis/{id}")
     public Avis getAvis(@PathVariable("idFilm") long idFilm, @PathVariable("id") long id){
         return avisRepository.findById(id).get();
     }
-
+*/
 /*
     @PostMapping("/{idFilm}/avis")
     public void postFilmAvisForm(@Valid Avis avis, BindingResult bindingResult, @PathVariable("idFilm") long idFilm, @AuthenticationPrincipal UtilisateurSpringSecurity utilisateurConnecte){

@@ -1,4 +1,4 @@
-package fr.eni.tp.filmotheque.bll.api;
+package fr.eni.tp.filmotheque.api;
 
 import fr.eni.tp.filmotheque.bll.IMembreService;
 import fr.eni.tp.filmotheque.bo.Genre;
